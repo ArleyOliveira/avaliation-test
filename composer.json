@@ -1,11 +1,17 @@
 {
-    "name": "arleyoliveira/avalition",
+    "name": "arleyoliveira/ipay",
     "license": "MIT",
     "type": "project",
-    "description": "Implement proposal",
+    "description": "Realiza pagamento entre usuários",
+    "authors": [
+        {
+            "name": "Arley Oliveira",
+            "email": "arley.msn@hotmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
-            "AppBundle\\": "src/AppBundle"
+            "": "src/"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
@@ -14,7 +20,7 @@
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.1",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^1.0",
@@ -56,7 +62,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.5.9"
+            "php": "7.1"
         },
         "sort-packages": true
     },

@@ -1,12 +1,12 @@
 version: '3'
 networks:
-  avaliation:
+  ipay:
 services:
   app:
     build:
       context: ./.docker/app
       dockerfile: Dockerfile
-    container_name: avaliation_app
+    container_name: ipay_app
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
@@ -15,11 +15,11 @@ services:
       - ./:/var/www/app
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - avaliation
+      - ipay
 
   nginx:
     image: nginx:1.19
-    container_name: avaliation_nginx
+    container_name: ipay_nginx
     ports:
       - 8008:80
     volumes:
@@ -27,15 +27,15 @@ services:
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d
     working_dir: /var/www/app
     networks:
-      - avaliation
+      - ipay
 
   database:
     image: mysql:5.7.22
-    container_name: avaliation_database
+    container_name: ipay_database
     ports:
       - 3308:3306
     environment:
-      MYSQL_DATABASE: avaliation
+      MYSQL_DATABASE: ipay
       MYSQL_ROOT_PASSWORD: root
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
@@ -43,11 +43,11 @@ services:
       - ./.dbdata:/var/lib/mysql
       - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
-      - avaliation
+      - ipay
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: avaliation_phpmyadmin
+    container_name: ipay_phpmyadmin
     links:
       - database:db
     ports:
@@ -60,4 +60,4 @@ services:
       - UPLOAD_LIMIT=300M
       - MAX_EXECUTION_TIME=1200
     networks:
-      - avaliation
+      - ipay
