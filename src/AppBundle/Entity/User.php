@@ -13,10 +13,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *      "PHISICAL_USER" = "AppBundle\Entity\PhysicalUser",
- *      "LEGAL_USER"    = "AppBundle\Entity\LegalUser"
+ *      "PERSON_USER" = "AppBundle\Entity\PersonUser"
  * })
- * @UniqueEntity(fields={"username"}, message="user.unique")
+ * @UniqueEntity(fields={"email"}, message="Já existe um usuário com este e-mail cadastrado!")
  * @ORM\HasLifecycleCallbacks()
  */
 abstract class User extends BaseUser implements IUser

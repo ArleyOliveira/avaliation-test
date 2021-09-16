@@ -3,8 +3,6 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\UserTypes;
-use AppBundle\Entity\Interfaces\IPerson;
-use AppBundle\Entity\Traits\TPerson;
 use AppBundle\Entity\Traits\TPhysicalPerson;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -13,13 +11,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Table(name="physical_users")
  * @ORM\Entity()
+ * @UniqueEntity(fields={"cpf"}, message="Já existe o CPF cadastrado!")
  * @Serializer\ExclusionPolicy("all")
- * @UniqueEntity(fields={"email"}, message="E-mail já cadastrado!")
- * @UniqueEntity(fields={"cpf"}, message="CPF já cadastrado!")
  */
-class PhysicalUser extends User implements IPerson
+class PhysicalUser extends PersonUser
 {
-    use TPerson, TPhysicalPerson;
+    use TPhysicalPerson;
 
     /**
      * @return string

@@ -3,9 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\UserTypes;
-use AppBundle\Entity\Interfaces\IPerson;
 use AppBundle\Entity\Traits\TLegalPerson;
-use AppBundle\Entity\Traits\TPerson;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,13 +11,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Table(name="legal_users")
  * @ORM\Entity()
+ * @UniqueEntity(fields={"cnpj"}, message="Já existe o CNPJ já cadastrado!")
  * @Serializer\ExclusionPolicy("all")
- * @UniqueEntity(fields={"email"}, message="E-mail já cadastrado!")
- * @UniqueEntity(fields={"cnpj"}, message="CPF já cadastrado!")
  */
-class LegalUser extends User implements IPerson
+class LegalUser extends PersonUser
 {
-    use TPerson, TLegalPerson;
+    use TLegalPerson;
 
     /**
      * @return string
