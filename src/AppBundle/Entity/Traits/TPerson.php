@@ -18,11 +18,20 @@ trait TPerson
     private $name;
 
     /**
-     * @var
-     * @ORM\Column(name="email", type="string", length=100)
-     * @Assert\NotBlank(message="Informe o campo e-mail")
-     * @Assert\Email(message="O e-mail não é válido!")
-     * @Serializer\Expose()
+     * @return string
      */
-    private $email;
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     * @return $this
+     */
+    public function setName(?string $name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 }

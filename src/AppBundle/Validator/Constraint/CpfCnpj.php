@@ -4,6 +4,9 @@ namespace AppBundle\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
+/**
+ * @Annotation
+ */
 class CpfCnpj extends Constraint
 {
     public $cpf      = false;

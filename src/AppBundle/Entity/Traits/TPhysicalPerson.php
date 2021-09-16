@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Traits;
 
+use AppBundle\Utils\TreatText;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Validator\Constraint as AssertBase;
 use JMS\Serializer\Annotation as Serializer;
@@ -34,7 +35,7 @@ trait TPhysicalPerson
      */
     public function setCpf(?string $cpf): TPhysicalPerson
     {
-        $this->cpf = $cpf;
+        $this->cpf = TreatText::onlyNumber($cpf);
         return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Traits;
 
+use AppBundle\Utils\TreatText;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Validator\Constraint as AssertBase;
 use JMS\Serializer\Annotation as Serializer;
@@ -14,7 +15,7 @@ trait TLegalPerson
      *
      * @ORM\Column(name="cnpj", type="string", length=14, nullable=true)
      * @Assert\NotBlank(message="Informe o CNPJ")
-     * @AssertBase\CpfCnpj(cnpj=true)
+     * @AssertBase\CpfCnpj(cnpj=true, whenNull=false, message="O CNPJ '{{ value }}' é inválido!")
      * @Serializer\Expose()
      */
     private $cnpj;
@@ -33,7 +34,7 @@ trait TLegalPerson
      */
     public function setCnpj(?string $cnpj): TLegalPerson
     {
-        $this->cnpj = $cnpj;
+        $this->cnpj = TreatText::onlyNumber($cnpj);
         return $this;
     }
 }
