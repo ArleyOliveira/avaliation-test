@@ -1,0 +1,63 @@
+version: '3'
+networks:
+  avaliation:
+services:
+  app:
+    build:
+      context: ./.docker/app
+      dockerfile: Dockerfile
+    container_name: avaliation_app
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/app
+    volumes:
+      - ./:/var/www/app
+      - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - avaliation
+
+  nginx:
+    image: nginx:1.19
+    container_name: avaliation_nginx
+    ports:
+      - 8008:80
+    volumes:
+      - ./:/var/www/app/
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+    working_dir: /var/www/app
+    networks:
+      - avaliation
+
+  database:
+    image: mysql:5.7.22
+    container_name: avaliation_database
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_DATABASE: avaliation
+      MYSQL_ROOT_PASSWORD: root
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./.dbdata:/var/lib/mysql
+      - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - avaliation
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: avaliation_phpmyadmin
+    links:
+      - database:db
+    ports:
+      - 8088:80
+    environment:
+      - PMA_HOST:db
+      - PMA_PORT:3300
+      - PMA_USER:root
+      - PMA_PASSWORD=root
+      - UPLOAD_LIMIT=300M
+      - MAX_EXECUTION_TIME=1200
+    networks:
+      - avaliation
