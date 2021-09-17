@@ -20,4 +20,6 @@ trait WithService
         $this->service = $service;
         $service->attachRepository($repository);
     }
+
+    abstract public function initialize(): void;
 }

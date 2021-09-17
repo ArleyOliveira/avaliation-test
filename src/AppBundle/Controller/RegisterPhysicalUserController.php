@@ -18,16 +18,19 @@ class RegisterPhysicalUserController extends AbstractController
 {
     use WithService;
 
-    /**
-     * @Route("", name="register_physical_user", methods={"POST"})
-     */
-    public function registerAction(Request $request)
+    public function initialize(): void
     {
         $this->attachRepositoryToService(
             $this->getUserService(),
             $this->getDoctrine()->getRepository(PhysicalUser::class)
         );
+    }
 
+    /**
+     * @Route("", name="register_physical_user", methods={"POST"})
+     */
+    public function registerAction(Request $request)
+    {
         $physicalUser = new PhysicalUser();
         $form = $this->createForm(PhysicalUserType::class, $physicalUser, [
             'csrf_protection' => false

@@ -2,10 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Controller\Traits\WithService;
+use AppBundle\Entity\PhysicalUser;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 abstract class AbstractController extends Controller
 {
+    use WithService;
+
     /**
      * @param $form
      * @return array
@@ -35,4 +39,5 @@ abstract class AbstractController extends Controller
 
         return $errors;
     }
+
 }
