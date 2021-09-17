@@ -9,11 +9,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class InitializeControllerEventListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             KernelEvents::CONTROLLER => array(
-                array('onKernelController', 10)
+                array('onKernelController')
             )
         );
     }
