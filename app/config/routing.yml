@@ -1,6 +1,10 @@
 app:
-    resource: '@AppBundle/Controller/'
+    resource: "@AppBundle/Controller"
     type: annotation
+    prefix: /api/v1
+    defaults:
+        _format: json
 
 api_login_check:
     path: /api/v1/login_check
+
