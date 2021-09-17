@@ -4,8 +4,8 @@ namespace AppBundle\Entity;
 
 use AppBundle\Constants\UserTypes;
 use AppBundle\Entity\Interfaces\IPerson;
-use AppBundle\Entity\Traits\TEntity;
-use AppBundle\Entity\Traits\TPerson;
+use AppBundle\Entity\Traits\EntityTrait;
+use AppBundle\Entity\Traits\PersonTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class PersonUser extends User implements IPerson
 {
-    use  TPerson, TEntity;
+    use  PersonTrait, EntityTrait;
 
     public function getType(): string
     {

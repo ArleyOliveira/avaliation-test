@@ -8,7 +8,7 @@ use AppBundle\Validator\Constraint as AssertBase;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-trait TPhysicalPerson
+trait PhysicalPersonTrait
 {
     /**
      * @var string

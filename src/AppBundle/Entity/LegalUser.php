@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\UserTypes;
-use AppBundle\Entity\Traits\TLegalPerson;
+use AppBundle\Entity\Traits\LegalPersonTrait;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class LegalUser extends PersonUser
 {
-    use TLegalPerson;
+    use LegalPersonTrait;
 
     /**
      * @return string

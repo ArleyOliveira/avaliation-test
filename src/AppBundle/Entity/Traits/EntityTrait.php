@@ -15,7 +15,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use function json_decode;
 use function json_encode;
 
-trait TEntity
+trait EntityTrait
 {
     /**
      * @var DateTime $created
@@ -56,7 +56,7 @@ trait TEntity
 
     /**
      * @param DateTime $created
-     * @return TEntity
+     * @return EntityTrait
      */
     public function setCreated(DateTime $created)
     {

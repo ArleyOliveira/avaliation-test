@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\UserTypes;
-use AppBundle\Entity\Traits\TPhysicalPerson;
+use AppBundle\Entity\Traits\PhysicalPersonTrait;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class PhysicalUser extends PersonUser
 {
-    use TPhysicalPerson;
+    use PhysicalPersonTrait;
 
     /**
      * @return string

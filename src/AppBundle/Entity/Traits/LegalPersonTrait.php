@@ -8,7 +8,7 @@ use AppBundle\Validator\Constraint as AssertBase;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-trait TLegalPerson
+trait LegalPersonTrait
 {
     /**
      * @var string
@@ -32,7 +32,7 @@ trait TLegalPerson
      * @param string|null $cnpj
      * @return $this
      */
-    public function setCnpj(?string $cnpj): TLegalPerson
+    public function setCnpj(?string $cnpj): LegalPersonTrait
     {
         $this->cnpj = TreatText::onlyNumber($cnpj);
         return $this;
