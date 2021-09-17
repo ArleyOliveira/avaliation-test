@@ -18,6 +18,12 @@ use function json_encode;
 trait EntityTrait
 {
     /**
+     * @var bool
+     * @ORM\Column(name="active", type="boolean", nullable=false, options={"default": true})
+     */
+    private $active;
+
+    /**
      * @var DateTime $created
      * @ORM\Column(type="datetime")
      * @Serializer\Type("DateTime<'Y-m-d\TH:i:s'>")
@@ -42,6 +48,7 @@ trait EntityTrait
 
     public function __construct()
     {
+        $this->active = true;
         $this->created = new \DateTime('now');
         $this->updated = new \DateTime('now');
     }
@@ -56,12 +63,10 @@ trait EntityTrait
 
     /**
      * @param DateTime $created
-     * @return EntityTrait
      */
     public function setCreated(DateTime $created)
     {
         $this->created = $created;
-        return $this;
     }
 
     /**
@@ -73,14 +78,28 @@ trait EntityTrait
     }
 
     /**
-     * @return $this
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
     public function setUpdated()
     {
         $this->updated = new DateTime('now');
-        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(?bool $active): void
+    {
+        $this->active = $active;
     }
 
     /**

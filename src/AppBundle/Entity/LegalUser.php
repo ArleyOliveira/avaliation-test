@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="legal_users")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LegalUserRepository")
  * @UniqueEntity(fields={"cnpj"}, message="Já existe o CNPJ já cadastrado!")
  * @Serializer\ExclusionPolicy("all")
  */
