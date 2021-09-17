@@ -8,7 +8,6 @@ use AppBundle\Validator\Constraint as AssertBase;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 trait TPhysicalPerson
 {
     /**
@@ -33,7 +32,7 @@ trait TPhysicalPerson
      * @param string|null $cpf
      * @return $this
      */
-    public function setCpf(?string $cpf): TPhysicalPerson
+    public function setCpf(?string $cpf)
     {
         $this->cpf = TreatText::onlyNumber($cpf);
         return $this;

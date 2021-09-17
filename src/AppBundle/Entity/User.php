@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Interfaces\IEntity;
 use AppBundle\Entity\Interfaces\IUser;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields={"email"}, message="Já existe um usuário com este e-mail cadastrado!")
  * @ORM\HasLifecycleCallbacks()
  */
-abstract class User extends BaseUser implements IUser
+abstract class User extends BaseUser implements IUser, IEntity
 {
     /**
      * @ORM\Id

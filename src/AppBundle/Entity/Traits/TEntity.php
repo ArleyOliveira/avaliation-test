@@ -10,6 +10,7 @@ use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
+use stdClass;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use function json_decode;
 use function json_encode;
@@ -17,29 +18,17 @@ use function json_encode;
 trait TEntity
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serializer\Expose()
-     */
-    private $id;
-
-    /**
      * @var DateTime $created
-     *
      * @ORM\Column(type="datetime")
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d\TH:i:s'>")
      */
     private $created;
 
     /**
      * @var DateTime $updated
      *
-     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d\TH:i:s'>")
      */
     private $updated;
 
@@ -49,16 +38,6 @@ trait TEntity
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return TEntity
-     */
-    public function setId(int $id)
-    {
-        $this->id = $id;
-        return $this;
     }
 
     public function __construct()
@@ -107,15 +86,15 @@ trait TEntity
     /**
      * @return array|mixed
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->getSerializer()->toArray($this, SerializationContext::create()->enableMaxDepthChecks());
     }
 
     /**
-     * @return object
+     * @return stdClass
      */
-    public function toStdClass()
+    public function toStdClass(): stdClass
     {
         return json_decode(json_encode($this->toArray()));
     }
