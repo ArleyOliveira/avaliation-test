@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *      "TRANSFER" = "AppBundle\Entity\Transfer"
+ *      "TRANSFER" = "AppBundle\Entity\Transfer",
+ *      "DEPOSIT" = "AppBundle\Entity\Deposit"
  * })
  * @ORM\HasLifecycleCallbacks()
  */
