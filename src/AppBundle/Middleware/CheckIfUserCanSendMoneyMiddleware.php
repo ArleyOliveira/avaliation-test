@@ -8,7 +8,7 @@ use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidUserException;
 
-class CheckIfUserCanTransactMiddleware extends Middleware
+class CheckIfUserCanSendMoneyMiddleware extends Middleware
 {
     /**
      * @var PersonUser
