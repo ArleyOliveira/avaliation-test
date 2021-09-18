@@ -5,13 +5,19 @@ namespace AppBundle\Service;
 use AppBundle\Constants\UserTypes;
 use AppBundle\Entity\Factories\UserFactory;
 use AppBundle\Entity\Interfaces\IEntity;
+use AppBundle\Entity\LegalUser;
 use AppBundle\Entity\PersonUser;
+use AppBundle\Entity\PhysicalUser;
 use AppBundle\Entity\User;
 use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\BadRequestHttpException;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Form\Serializes\FormErrorSerializer;
+use AppBundle\Middleware\CheckExistPhysicalUserByCpf;
+use AppBundle\Middleware\CheckExistUserByEmail;
+use AppBundle\Repository\PersonUserRepository;
+use AppBundle\Repository\UserRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -67,6 +73,42 @@ class UserService extends AbstractService
 
     /**
      * @param User $user
+     * @throws AbstractException
+     */
+    private function checkExistUser(User $user)
+    {
+        if ($this->repository instanceof PersonUserRepository) {
+            $middleware = new CheckExistUserByEmail(
+                'email',
+                $user->getEmail(),
+                $user->getId(),
+                $this->repository
+            );
+
+            $current = $middleware;
+
+            if ($user instanceof PhysicalUser) {
+                $current = $current->linkWith(new CheckExistPhysicalUserByCpf(
+                    'cpf',
+                    $user->getCpf(),
+                    $user->getId(),
+                    $this->em->getRepository(PhysicalUser::class)
+                ));
+            } else if ($user instanceof LegalUser) {
+                $current = $current->linkWith(new CheckExistPhysicalUserByCpf(
+                    'cnpj',
+                    $user->getCnpj(),
+                    $user->getId(),
+                    $this->em->getRepository(LegalUser::class)
+                ));
+            }
+            
+            $middleware->check();
+        }
+    }
+
+    /**
+     * @param User $user
      */
     public function encoderPassword(User $user)
     {
@@ -76,12 +118,12 @@ class UserService extends AbstractService
     }
 
     /**
-     * @param IEntity $user
+     * @param User $user
      * @param $data
      * @throws AbstractException
      * @throws OptimisticLockException
      */
-    public function processSaveForm(IEntity $user, $data): void
+    public function processSaveForm(User $user, $data): void
     {
         $form = $this->formFactory->create($user->getFormTypeClass(), $user, [
             'csrf_protection' => false
@@ -91,13 +133,11 @@ class UserService extends AbstractService
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $this->checkExistUser($user);
+
             if (null !== $user->getPlainPassword()) {
                 $this->encoderPassword($user);
             }
-
-            $user->setEnabled(true);
-            $user->setRoles(['ROLE_USER']);
-            $user->setSuperAdmin(true);
 
             $this->persist($user);
         } else {

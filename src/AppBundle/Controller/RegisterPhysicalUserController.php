@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Controller\Traits\WithService;
+use AppBundle\Entity\PersonUser;
 use AppBundle\Entity\PhysicalUser;
+use AppBundle\Repository\UserRepository;
 use AppBundle\Service\UserService;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,7 +25,7 @@ class RegisterPhysicalUserController extends AbstractController
     {
         $this->attachToService(
             $this->getUserService(),
-            array('attachRepository' => $this->getDoctrine()->getRepository(PhysicalUser::class)),
+            array('attachRepository' => $this->getDoctrine()->getRepository(PersonUser::class)),
             array('attachFormFactory' => $this->get('form.factory')),
             array('attachEncoderFactoryInterface' => $this->get('security.encoder_factory'))
         );

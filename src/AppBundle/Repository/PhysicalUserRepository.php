@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-class PhysicalUserRepository extends AbstractRepository
+class PhysicalUserRepository extends PersonUserRepository
 {
-
 }

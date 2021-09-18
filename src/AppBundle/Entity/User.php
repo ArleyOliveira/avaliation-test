@@ -18,7 +18,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      "PHISICAL_USER" = "AppBundle\Entity\PhysicalUser",
  *      "LEGAL_USER"    = "AppBundle\Entity\LegalUser"
  * })
- * @UniqueEntity(fields={"email"}, message="Já existe um usuário com este e-mail cadastrado!")
  * @ORM\AttributeOverrides({
  *  @ORM\AttributeOverride(
  *      name="salt",

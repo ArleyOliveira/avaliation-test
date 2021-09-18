@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-class LegalUserRepository extends AbstractRepository
+class LegalUserRepository extends PersonUserRepository
 {
 
 }

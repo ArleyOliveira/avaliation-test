@@ -19,6 +19,9 @@ abstract class AbstractController extends Controller
         $response['statusCode'] = Response::HTTP_INTERNAL_SERVER_ERROR;
 
         if ($e instanceof AbstractException) {
+
+            $response['statusCode'] = Response::HTTP_BAD_REQUEST;
+
             if ($e->getDetails()) {
                 $response['details'] = $e->getDetails();
             }
