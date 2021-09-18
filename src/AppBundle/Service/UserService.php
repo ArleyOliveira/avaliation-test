@@ -6,7 +6,6 @@ use AppBundle\Constants\UserTypes;
 use AppBundle\Entity\Factories\UserFactory;
 use AppBundle\Entity\Interfaces\IEntity;
 use AppBundle\Entity\LegalUser;
-use AppBundle\Entity\PersonUser;
 use AppBundle\Entity\PhysicalUser;
 use AppBundle\Entity\User;
 use AppBundle\Exceptions\AbstractException;
@@ -14,8 +13,8 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\BadRequestHttpException;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Form\Serializes\FormErrorSerializer;
-use AppBundle\Middleware\CheckExistPhysicalUserByCpf;
-use AppBundle\Middleware\CheckExistUserByEmail;
+use AppBundle\Middleware\CheckExistPhysicalUserByCpfMiddleware;
+use AppBundle\Middleware\CheckExistUserByEmailMiddleware;
 use AppBundle\Repository\PersonUserRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -75,7 +74,7 @@ class UserService extends AbstractService
     private function checkExistUser(User $user)
     {
         if ($this->repository instanceof PersonUserRepository) {
-            $middleware = new CheckExistUserByEmail(
+            $middleware = new CheckExistUserByEmailMiddleware(
                 'email',
                 $user->getEmail(),
                 $user->getId(),
@@ -85,14 +84,14 @@ class UserService extends AbstractService
             $current = $middleware;
 
             if ($user instanceof PhysicalUser) {
-                $current = $current->linkWith(new CheckExistPhysicalUserByCpf(
+                $current = $current->linkWith(new CheckExistPhysicalUserByCpfMiddleware(
                     'cpf',
                     $user->getCpf(),
                     $user->getId(),
                     $this->em->getRepository(PhysicalUser::class)
                 ));
             } else if ($user instanceof LegalUser) {
-                $current = $current->linkWith(new CheckExistPhysicalUserByCpf(
+                $current = $current->linkWith(new CheckExistPhysicalUserByCpfMiddleware(
                     'cnpj',
                     $user->getCnpj(),
                     $user->getId(),

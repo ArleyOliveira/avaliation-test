@@ -4,7 +4,7 @@ namespace AppBundle\Middleware;
 
 use AppBundle\Repository\AbstractRepository;
 
-abstract class CheckExistUser extends Middleware
+abstract class CheckExistUserMiddleware extends Middleware
 {
     /**
      * @var AbstractRepository

@@ -7,12 +7,12 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Repository\PersonUserRepository;
 
-class CheckExistPhysicalUserByCpf extends CheckExistUser
+class CheckExistUserByEmailMiddleware extends CheckExistUserMiddleware
 {
     /**
      * @var string
      */
-    private $cpf;
+    private $email;
 
     /**
      * @param string $columnName
@@ -23,7 +23,7 @@ class CheckExistPhysicalUserByCpf extends CheckExistUser
     public function __construct(string $columnName, string $cpf, ?int $ignoreUserId, PersonUserRepository $repository)
     {
         parent::__construct($columnName, $ignoreUserId, $repository);
-        $this->cpf = $cpf;
+        $this->email = $cpf;
     }
 
     /**
@@ -32,12 +32,12 @@ class CheckExistPhysicalUserByCpf extends CheckExistUser
      */
     public function check(): bool
     {
-        $user = $this->repository->findOneBy([$this->columnName => $this->cpf]);
+        $user = $this->repository->findOneBy([$this->columnName => $this->email]);
 
         if (null !== $user && $user->getId() !== $this->ignoreUserId) {
             throw ExceptionFactory::create(
                 InvalidUserException::class,
-                "Já existe um usuário com este CPF ({$this->cpf}) cadastrado!"
+                "Já existe um usuário com este e-mail ({$this->email}) cadastrado!"
             );
         }
 
@@ -45,12 +45,12 @@ class CheckExistPhysicalUserByCpf extends CheckExistUser
     }
 
     /**
-     * @param string $cpf
-     * @return CheckExistPhysicalUserByCpf
+     * @param string $email
+     * @return CheckExistUserByEmailMiddleware
      */
-    public function setCpf(string $cpf): CheckExistPhysicalUserByCpf
+    public function setEmail(string $email): CheckExistUserByEmailMiddleware
     {
-        $this->cpf = $cpf;
+        $this->email = $email;
         return $this;
     }
 }
