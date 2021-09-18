@@ -2,25 +2,24 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Service\DepositService;
-use Exception;
+use AppBundle\Service\TransferService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
-class DepositController extends AbstractController
+class TransferController extends AbstractController
 {
-
     public function initialize(): void
     {
-        $this->attachToService($this->getDepositService(),
+        $this->attachToService($this->getTransferService(),
             array('attachWalletOwner' => $this->getUser())
         );
     }
 
     /**
-     * @Route("/deposit", name="deposit_create", methods={"POST"})
+     * @Route("/transfer", name="transfer_create", methods={"POST"})
      */
     public function createAction(Request $request)
     {
@@ -28,9 +27,11 @@ class DepositController extends AbstractController
         $em->getConnection()->beginTransaction();
 
         try {
+
+            $payeeId = (int)$request->request->get('payee', null);
             $value = (float)$request->request->get('value', 0);
 
-            $transaction = $this->service->deposit($value);
+            $transaction = $this->service->handleTransfer($payeeId, $value);
 
             $em->getConnection()->commit();
 
@@ -46,10 +47,10 @@ class DepositController extends AbstractController
     }
 
     /**
-     * @return DepositService|object
+     * @return TransferService|object
      */
-    public function getDepositService()
+    private function getTransferService()
     {
-        return $this->get('deposit.service');
+        return $this->get('transfer.service');
     }
 }

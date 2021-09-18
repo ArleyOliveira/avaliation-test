@@ -5,6 +5,6 @@ namespace AppBundle\Constants;
 class TransactionStatusTypes extends Enum
 {
     const PENDING = "PENDING";
-    const CREDIT = "CREDIT";
+    const CONFIRMED = "CONFIRMED";
     const OVERTURNED = "OVERTURNED";
 }

@@ -19,10 +19,7 @@ class DepositService extends TransactionService
      */
     protected function getDepositMiddlewares(float $value): Middleware
     {
-        $middle = $this->getTransactionMiddlewares();
-        $middle->linkWith(new CheckIfValueGreaterEqualThanZeroMiddleware($value));
-
-        return $middle;
+        return $this->getTransactionMiddlewares($value);
     }
 
     /**
@@ -33,14 +30,13 @@ class DepositService extends TransactionService
      */
     public function deposit(float $value): Deposit
     {
-        $middle = $this->getDepositMiddlewares($value);
-        $middle->check();
+        $middlewares = $this->getDepositMiddlewares($value);
+        $middlewares->check();
 
         $transaction = TransactionFactory::createDeposit($this->wallet, $value);
         $this->confirm($transaction);
 
         return $transaction;
-        
     }
 
     /**
@@ -52,7 +48,7 @@ class DepositService extends TransactionService
         $wallet = $transaction->getWallet();
         $wallet->addValue($transaction->getValue());
 
-        $transaction->setStatus(TransactionStatusTypes::get(TransactionStatusTypes::CREDIT)->getName());
+        $transaction->setStatus(TransactionStatusTypes::get(TransactionStatusTypes::CONFIRMED)->getName());
 
         $this->persist($wallet);
     }

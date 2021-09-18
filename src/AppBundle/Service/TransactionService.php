@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Interfaces\IUserTransaction;
 use AppBundle\Entity\Transaction;
 use AppBundle\Entity\Wallet;
+use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroMiddleware;
 use AppBundle\Middleware\CheckIfWalletIsNotNullMiddleware;
 use AppBundle\Middleware\Middleware;
 
@@ -32,9 +33,11 @@ abstract class TransactionService extends AbstractService
     /**
      * @return CheckIfWalletIsNotNullMiddleware
      */
-    protected function getTransactionMiddlewares(): Middleware
+    protected function getTransactionMiddlewares(float $value): Middleware
     {
-        return new CheckIfWalletIsNotNullMiddleware($this->wallet);
+        $middleware = new CheckIfWalletIsNotNullMiddleware($this->wallet);
+        $middleware->linkWith(new CheckIfValueGreaterEqualThanZeroMiddleware($value));
+        return $middleware;
     }
 
     /**

@@ -30,7 +30,7 @@ class CheckIfValueGreaterEqualThanZeroMiddleware extends Middleware
         if ($this->value <= 0) {
             throw ExceptionFactory::create(
                 InvalidTransactionException::class,
-                "O valor da transação não pode ser menor que zero!"
+                "O valor da transação não pode ser menor ou igual a zero!"
             );
         }
 

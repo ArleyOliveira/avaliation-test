@@ -16,3 +16,7 @@ services:
   deposit.service:
     class: AppBundle\Service\DepositService
     arguments: [ "@doctrine.orm.entity_manager" ]
+
+  transfer.service:
+    class: AppBundle\Service\TransferService
+    arguments: [ "@doctrine.orm.entity_manager" ]
