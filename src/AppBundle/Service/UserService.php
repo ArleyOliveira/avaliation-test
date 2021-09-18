@@ -17,12 +17,9 @@ use AppBundle\Form\Serializes\FormErrorSerializer;
 use AppBundle\Middleware\CheckExistPhysicalUserByCpf;
 use AppBundle\Middleware\CheckExistUserByEmail;
 use AppBundle\Repository\PersonUserRepository;
-use AppBundle\Repository\UserRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserService extends AbstractService
 {

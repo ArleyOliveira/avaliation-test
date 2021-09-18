@@ -3,11 +3,9 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\UserTypes;
-use AppBundle\Entity\Interfaces\IPerson;
 use AppBundle\Entity\Traits\EntityTrait;
 use AppBundle\Entity\Traits\PersonTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PersonUserRepository")
