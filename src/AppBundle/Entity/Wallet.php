@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Constants\TransactionTypes;
 use AppBundle\Entity\Interfaces\IEntity;
 use AppBundle\Entity\Traits\EntityTrait;
 use AppBundle\Entity\Traits\WithEntityId;
@@ -31,7 +32,7 @@ class Wallet implements IEntity
 
     /**
      * @var ArrayCollection|Transaction[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Wallet", mappedBy="wallet")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Wallet", mappedBy="wallet", cascade={"persist", "remove"})
      */
     private $transactions;
 
@@ -104,5 +105,19 @@ class Wallet implements IEntity
         $this->transactions->add($transaction);
         $transaction->setWallet($this);
         return $this;
+    }
+
+    /**
+     * @param float $value
+     */
+    public function addValue(float $value) {
+        $this->availableValue += $value;
+    }
+
+    /**
+     * @param float $value
+     */
+    public function removeValue(float $value) {
+        $this->availableValue -= $value;
     }
 }

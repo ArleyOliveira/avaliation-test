@@ -2,13 +2,15 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Constants\TransactionStatusTypes;
 use AppBundle\Entity\Interfaces\IEntity;
 use AppBundle\Entity\Traits\EntityTrait;
 use AppBundle\Entity\Traits\WithEntityId;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="trasactions")
+ * @ORM\Table(name="transactions")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TransactionRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
@@ -25,6 +27,7 @@ abstract class Transaction implements IEntity
     /**
      * @var float
      * @ORM\Column(name="value", type="float")
+     * @Assert\NotNull(message="Informe o valor da transação")
      */
     private $value;
 
@@ -40,6 +43,12 @@ abstract class Transaction implements IEntity
      * @ORM\JoinColumn(name="wallet_id", referencedColumnName="id")
      */
     private $wallet;
+
+    public function __construct()
+    {
+        $this->__init();
+        $this->status = TransactionStatusTypes::get(TransactionStatusTypes::PENDING)->getValue();
+    }
 
     /**
      * @return string

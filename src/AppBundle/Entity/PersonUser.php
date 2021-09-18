@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\UserTypes;
+use AppBundle\Entity\Interfaces\IUserTransaction;
 use AppBundle\Entity\Traits\EntityTrait;
 use AppBundle\Entity\Traits\PersonTrait;
 use AppBundle\Form\Type\PersonUserType;
@@ -21,7 +22,7 @@ use JMS\Serializer\SerializationContext;
  * })
  * @ORM\HasLifecycleCallbacks()
  */
-class PersonUser extends User
+class PersonUser extends User implements IUserTransaction
 {
     use  PersonTrait, EntityTrait;
 

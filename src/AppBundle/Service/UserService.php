@@ -13,15 +13,18 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\BadRequestHttpException;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Form\Serializes\FormErrorSerializer;
-use AppBundle\Middleware\CheckExistPhysicalUserByCpfMiddleware;
-use AppBundle\Middleware\CheckExistUserByEmailMiddleware;
+use AppBundle\Middleware\CheckIfExistPhysicalUserByCpfMiddleware;
+use AppBundle\Middleware\CheckIfExistUserByEmailMiddleware;
 use AppBundle\Repository\PersonUserRepository;
+use AppBundle\Service\Traits\WithRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class UserService extends AbstractService
+class UserService extends AbstractEntityService
 {
+    use WithRepository;
+
     /**
      * @var FormFactoryInterface
      */
@@ -53,7 +56,7 @@ class UserService extends AbstractService
      * @return string
      * @throws AbstractException
      */
-    public function getUserTypeByData(array $data): string
+    protected function getUserTypeByData(array $data): string
     {
         if (isset($data['cnpj'])) {
             return UserTypes::LEGAL_USER;
@@ -71,10 +74,10 @@ class UserService extends AbstractService
      * @param User $user
      * @throws AbstractException
      */
-    private function checkExistUser(User $user)
+    protected function checkExistUser(User $user)
     {
         if ($this->repository instanceof PersonUserRepository) {
-            $middleware = new CheckExistUserByEmailMiddleware(
+            $middleware = new CheckIfExistUserByEmailMiddleware(
                 'email',
                 $user->getEmail(),
                 $user->getId(),
@@ -84,14 +87,14 @@ class UserService extends AbstractService
             $current = $middleware;
 
             if ($user instanceof PhysicalUser) {
-                $current = $current->linkWith(new CheckExistPhysicalUserByCpfMiddleware(
+                $current = $current->linkWith(new CheckIfExistPhysicalUserByCpfMiddleware(
                     'cpf',
                     $user->getCpf(),
                     $user->getId(),
                     $this->em->getRepository(PhysicalUser::class)
                 ));
             } else if ($user instanceof LegalUser) {
-                $current = $current->linkWith(new CheckExistPhysicalUserByCpfMiddleware(
+                $current = $current->linkWith(new CheckIfExistPhysicalUserByCpfMiddleware(
                     'cnpj',
                     $user->getCnpj(),
                     $user->getId(),
@@ -106,7 +109,7 @@ class UserService extends AbstractService
     /**
      * @param User $user
      */
-    public function encoderPassword(User $user)
+    protected function encoderPassword(User $user)
     {
         $encoder = $this->encoderFactory->getEncoder($user);
         $password = $encoder->encodePassword($user->getPlainPassword(), $user->getSalt());
@@ -119,7 +122,7 @@ class UserService extends AbstractService
      * @throws AbstractException
      * @throws OptimisticLockException
      */
-    public function processSaveForm(User $user, $data): void
+    protected function processSaveForm(User $user, $data): void
     {
         $form = $this->formFactory->create($user->getFormTypeClass(), $user, [
             'csrf_protection' => false

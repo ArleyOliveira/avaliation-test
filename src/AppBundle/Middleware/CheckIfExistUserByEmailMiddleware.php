@@ -7,7 +7,7 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Repository\PersonUserRepository;
 
-class CheckExistUserByEmailMiddleware extends CheckExistUserMiddleware
+class CheckIfExistUserByEmailMiddleware extends CheckIfExistUserMiddleware
 {
     /**
      * @var string
@@ -46,9 +46,9 @@ class CheckExistUserByEmailMiddleware extends CheckExistUserMiddleware
 
     /**
      * @param string $email
-     * @return CheckExistUserByEmailMiddleware
+     * @return CheckIfExistUserByEmailMiddleware
      */
-    public function setEmail(string $email): CheckExistUserByEmailMiddleware
+    public function setEmail(string $email): CheckIfExistUserByEmailMiddleware
     {
         $this->email = $email;
         return $this;

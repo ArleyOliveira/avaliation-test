@@ -7,7 +7,7 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Repository\PersonUserRepository;
 
-class CheckExistPhysicalUserByCpfMiddleware extends CheckExistUserMiddleware
+class CheckIfExistPhysicalUserByCpfMiddleware extends CheckIfExistUserMiddleware
 {
     /**
      * @var string
@@ -46,9 +46,9 @@ class CheckExistPhysicalUserByCpfMiddleware extends CheckExistUserMiddleware
 
     /**
      * @param string $cpf
-     * @return CheckExistPhysicalUserByCpfMiddleware
+     * @return CheckIfExistPhysicalUserByCpfMiddleware
      */
-    public function setCpf(string $cpf): CheckExistPhysicalUserByCpfMiddleware
+    public function setCpf(string $cpf): CheckIfExistPhysicalUserByCpfMiddleware
     {
         $this->cpf = $cpf;
         return $this;
