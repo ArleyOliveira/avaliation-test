@@ -58,6 +58,8 @@ class TransferService extends TransactionService
 
         $this->persist($wallet);
         $this->persist($walletPayee);
+
+        $this->notify($transaction);
     }
 
     /**

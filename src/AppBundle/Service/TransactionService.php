@@ -8,6 +8,7 @@ use AppBundle\Entity\Wallet;
 use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroMiddleware;
 use AppBundle\Middleware\CheckIfWalletIsNotNullMiddleware;
 use AppBundle\Middleware\Middleware;
+use AppBundle\Notification\TransactionNotify;
 
 abstract class TransactionService extends AbstractService
 {
@@ -20,6 +21,11 @@ abstract class TransactionService extends AbstractService
      * @var Wallet
      */
     protected $wallet;
+
+    /**
+     * @param Transaction $transaction
+     */
+    abstract protected function confirm(Transaction $transaction);
 
     /**
      * @param IUserTransaction $walletOwner
@@ -43,6 +49,8 @@ abstract class TransactionService extends AbstractService
     /**
      * @param Transaction $transaction
      */
-    abstract protected function confirm(Transaction $transaction);
+    protected function notify(Transaction $transaction) {
+        TransactionNotify::notify($transaction);
+    }
 
 }

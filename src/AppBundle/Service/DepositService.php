@@ -51,6 +51,8 @@ class DepositService extends TransactionService
         $transaction->setStatus(TransactionStatusTypes::get(TransactionStatusTypes::CONFIRMED)->getName());
 
         $this->persist($wallet);
+
+        $this->notify($transaction);
     }
 
 }
