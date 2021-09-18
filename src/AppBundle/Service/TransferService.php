@@ -16,6 +16,7 @@ use AppBundle\Middleware\CheckIfUserCanSendMoneyMiddleware;
 use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroMiddleware;
 use AppBundle\Middleware\CheckIfWalletHasAvailableValueMiddleware;
 use AppBundle\Middleware\CheckIfWalletIsNotNullMiddleware;
+use AppBundle\Middleware\CheckPaymentServiceAuthorizationMiddleware;
 use AppBundle\Middleware\Middleware;
 use Doctrine\ORM\OptimisticLockException;
 
@@ -33,7 +34,9 @@ class TransferService extends TransactionService
             ->linkWith(new CheckIfPayerAndPayeeIsEqualMiddleware($this->walletOwner, $payee))
             ->linkWith(new CheckIfValueGreaterEqualThanZeroMiddleware($value))
             ->linkWith(new CheckIfUserCanSendMoneyMiddleware($this->walletOwner))
-            ->linkWith(new CheckIfWalletHasAvailableValueMiddleware($this->wallet, $value));
+            ->linkWith(new CheckIfWalletHasAvailableValueMiddleware($this->wallet, $value))
+            ->linkWith(new CheckPaymentServiceAuthorizationMiddleware())
+        ;
 
         return $middleware;
     }
