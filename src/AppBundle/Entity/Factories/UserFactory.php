@@ -21,7 +21,7 @@ abstract class UserFactory
     public static function create(string $userType): User
     {
         switch ($userType) {
-            case UserTypes::PHISICAL_USER:
+            case UserTypes::PHYSICAL_USER:
                 return new PhysicalUser();
             case UserTypes::LEGAL_USER:
                 return new LegalUser();

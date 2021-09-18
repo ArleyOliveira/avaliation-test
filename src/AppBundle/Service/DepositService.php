@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Constants\TransactionStatusTypes;
+use AppBundle\Entity\Deposit;
 use AppBundle\Entity\Factories\TransactionFactory;
 use AppBundle\Entity\Transaction;
 use AppBundle\Exceptions\AbstractException;
@@ -25,24 +26,29 @@ class DepositService extends TransactionService
     }
 
     /**
-     * @param $value
+     * @param float $value
+     * @return Deposit
      * @throws AbstractException
      * @throws OptimisticLockException
      */
-    public function deposit($value)
+    public function deposit(float $value): Deposit
     {
         $middle = $this->getDepositMiddlewares($value);
-        if ($middle->check()) {
-            $transaction = TransactionFactory::createDeposit($this->wallet, $value);
-            $this->confirm($transaction);
-        }
+        $middle->check();
+
+        $transaction = TransactionFactory::createDeposit($this->wallet, $value);
+        $this->confirm($transaction);
+
+        return $transaction;
+        
     }
 
     /**
      * @param Transaction $transaction
      * @throws OptimisticLockException
      */
-    protected function confirm(Transaction $transaction) {
+    protected function confirm(Transaction $transaction)
+    {
         $wallet = $transaction->getWallet();
         $wallet->addValue($transaction->getValue());
 

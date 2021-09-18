@@ -22,8 +22,6 @@ class TransactionController extends AbstractController
      */
     public function createAction(Request $request)
     {
-        return new JsonResponse([
-            'OK' => true
-        ], Response::HTTP_OK);
+        //TODO
     }
 }

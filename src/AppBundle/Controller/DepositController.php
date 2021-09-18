@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\DepositService;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +17,9 @@ class DepositController extends AbstractController
 
     public function initialize(): void
     {
-        // TODO: Implement initialize() method.
+        $this->attachToService($this->getDepositService(),
+            array('attachWalletOwner' => $this->getUser())
+        );
     }
 
     /**
@@ -23,6 +27,32 @@ class DepositController extends AbstractController
      */
     public function createAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction();
 
+        try {
+            $value = (float)$request->request->get('value', 0);
+
+            $transaction = $this->service->deposit($value);
+
+            $em->getConnection()->commit();
+
+            $responseData = $transaction->toArray();
+            $statusCode = Response::HTTP_OK;
+        } catch (Exception $e) {
+            $em->getConnection()->rollBack();
+
+            $responseData = $this->handleError($e);
+            $statusCode = $responseData['statusCode'];
+        }
+        return new JsonResponse($responseData, $statusCode);
+    }
+
+    /**
+     * @return DepositService|object
+     */
+    public function getDepositService()
+    {
+        return $this->get('deposit.service');
     }
 }

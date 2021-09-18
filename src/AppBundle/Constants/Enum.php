@@ -2,6 +2,10 @@
 
 namespace AppBundle\Constants;
 
+use InvalidArgumentException;
+use LogicException;
+use ReflectionClass;
+
 abstract class Enum
 {
     /**

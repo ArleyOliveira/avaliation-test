@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *      "PERSON_USER" = "AppBundle\Entity\PersonUser",
- *      "PHISICAL_USER" = "AppBundle\Entity\PhysicalUser",
+ *      "PHYSICAL_USER" = "AppBundle\Entity\PhysicalUser",
  *      "LEGAL_USER"    = "AppBundle\Entity\LegalUser"
  * })
  * @ORM\AttributeOverrides({

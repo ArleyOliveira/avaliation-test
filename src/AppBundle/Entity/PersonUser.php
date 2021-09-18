@@ -17,7 +17,7 @@ use JMS\Serializer\SerializationContext;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *      "PHISICAL_USER" = "AppBundle\Entity\PhysicalUser",
+ *      "PHYSICAL_USER" = "AppBundle\Entity\PhysicalUser",
  *      "LEGAL_USER"    = "AppBundle\Entity\LegalUser"
  * })
  * @ORM\HasLifecycleCallbacks()

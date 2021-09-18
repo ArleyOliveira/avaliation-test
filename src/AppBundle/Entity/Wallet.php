@@ -8,6 +8,7 @@ use AppBundle\Entity\Traits\EntityTrait;
 use AppBundle\Entity\Traits\WithEntityId;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Table(name="wallets")
@@ -27,12 +28,14 @@ class Wallet implements IEntity
      * @var PersonUser
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\PersonUser", inversedBy="wallet")
      * @ORM\JoinColumn(name="person_user_id", referencedColumnName="id")
+     * @Serializer\Exclude()
      */
     private $personUser;
 
     /**
      * @var ArrayCollection|Transaction[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Wallet", mappedBy="wallet", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Transaction", mappedBy="wallet", cascade={"persist", "remove"})
+     * @Serializer\Exclude()
      */
     private $transactions;
 

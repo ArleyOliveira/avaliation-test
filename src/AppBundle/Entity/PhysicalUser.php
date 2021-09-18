@@ -30,6 +30,6 @@ class PhysicalUser extends PersonUser
      */
     public function getType(): string
     {
-        return UserTypes::PHISICAL_USER;
+        return UserTypes::PHYSICAL_USER;
     }
 }

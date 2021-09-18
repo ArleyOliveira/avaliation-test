@@ -61,7 +61,7 @@ class UserService extends AbstractEntityService
         if (isset($data['cnpj'])) {
             return UserTypes::LEGAL_USER;
         } else if (isset($data['cpf'])) {
-            return UserTypes::PHISICAL_USER;
+            return UserTypes::PHYSICAL_USER;
         }
 
         throw ExceptionFactory::create(
