@@ -19,7 +19,6 @@ abstract class AbstractController extends Controller
         $response['statusCode'] = Response::HTTP_INTERNAL_SERVER_ERROR;
 
         if ($e instanceof AbstractException) {
-
             $response['statusCode'] = Response::HTTP_BAD_REQUEST;
 
             if ($e->getDetails()) {
@@ -29,8 +28,17 @@ abstract class AbstractController extends Controller
             if ($e instanceof AbstractHttpException && $e->getStatusCode()) {
                 $response['statusCode'] = $e->getStatusCode();
             }
+
+        } else {
+            $response['statusCode'] = Response::HTTP_INTERNAL_SERVER_ERROR;
         }
 
+        $this->getLogService()->register($e);
+
         return $response;
+    }
+
+    public function getLogService() {
+        return $this->get('log.service');
     }
 }

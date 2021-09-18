@@ -27,7 +27,6 @@ class TransferController extends AbstractController
         $em->getConnection()->beginTransaction();
 
         try {
-
             $payeeId = (int)$request->request->get('payee', null);
             $value = (float)$request->request->get('value', 0);
 

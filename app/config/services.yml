@@ -4,6 +4,10 @@ parameters:
 #parameter_name: value
 
 services:
+  log.service:
+    class: AppBundle\Service\Log\LogService
+    arguments: [ "@logger" ]
+
   initialize_controller_event_listener:
     class: AppBundle\Event\EventListener\InitializeControllerEventListener
     tags:
