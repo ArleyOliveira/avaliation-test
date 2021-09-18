@@ -20,9 +20,23 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * })
  * @ORM\HasLifecycleCallbacks()
  */
-class PersonUser extends User implements IPerson
+abstract class PersonUser extends User
 {
     use  PersonTrait, EntityTrait;
+
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this
+            ->setEnabled(true)
+            ->setRoles(['ROLE_USER'])
+            ->setSuperAdmin(false);
+
+        $this->active = true;
+        $this->created = new \DateTime('now');
+        $this->updated = new \DateTime('now');
+    }
 
     public function getType(): string
     {

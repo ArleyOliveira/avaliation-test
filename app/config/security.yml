@@ -10,11 +10,11 @@ security:
 
     providers:
         fos_userbundle:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 
     firewalls:
         api_login:
-            pattern: ^/api/v1/login
+            pattern: ^/api/v1/login_check
             stateless: true
             anonymous: true
             form_login:

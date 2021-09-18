@@ -3,41 +3,31 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Controller\Traits\WithService;
-use AppBundle\Entity\PhysicalUser;
+use AppBundle\Exceptions\AbstractException;
+use AppBundle\Exceptions\Http\AbstractHttpException;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractController extends Controller
 {
     use WithService;
 
-    /**
-     * @param $form
-     * @return array
-     */
-    protected function getFormErrors($form)
+    public function handleError(Exception $e): array
     {
-        $errors = array();
+        $response['message'] = $e->getMessage();
+        $response['statusCode'] = Response::HTTP_INTERNAL_SERVER_ERROR;
 
-        // get form errors first
-        foreach ($form->getErrors() as $err) {
-            if ($form->isRoot()) {
-                $errors['__GLOBAL__'][] = $err->getMessage();
-            } else {
-                $errors[] = $err->getMessage();
+        if ($e instanceof AbstractException) {
+            if ($e->getDetails()) {
+                $response['details'] = $e->getDetails();
+            }
+
+            if ($e instanceof AbstractHttpException && $e->getStatusCode()) {
+                $response['statusCode'] = $e->getStatusCode();
             }
         }
 
-        // check if form has any children
-        if ($form->count() > 0) {
-            // get errors from form child
-            foreach ($form->getIterator() as $key => $child) {
-                if ($child_err = $this->getFormErrors($child)) {
-                    $errors[$key] = $child_err;
-                }
-            }
-        }
-
-        return $errors;
+        return $response;
     }
-
 }

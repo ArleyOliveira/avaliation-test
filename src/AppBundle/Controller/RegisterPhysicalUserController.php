@@ -4,12 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Controller\Traits\WithService;
 use AppBundle\Entity\PhysicalUser;
-use AppBundle\Form\Type\PhysicalUserType;
 use AppBundle\Service\UserService;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * @Route("/register/physical-user")
@@ -20,9 +21,11 @@ class RegisterPhysicalUserController extends AbstractController
 
     public function initialize(): void
     {
-        $this->attachRepositoryToService(
+        $this->attachToService(
             $this->getUserService(),
-            $this->getDoctrine()->getRepository(PhysicalUser::class)
+            array('attachRepository' => $this->getDoctrine()->getRepository(PhysicalUser::class)),
+            array('attachFormFactory' => $this->get('form.factory')),
+            array('attachEncoderFactoryInterface' => $this->get('security.encoder_factory'))
         );
     }
 
@@ -31,24 +34,24 @@ class RegisterPhysicalUserController extends AbstractController
      */
     public function registerAction(Request $request)
     {
-        $physicalUser = new PhysicalUser();
-        $form = $this->createForm(PhysicalUserType::class, $physicalUser, [
-            'csrf_protection' => false
-        ]);
+        try {
+            $user = $this->service->create($request->request->all());
 
-        $form->submit($request->request->all());
+            $responseData = $user->toArray();
+            $statusCode = Response::HTTP_OK;
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            return new JsonResponse($physicalUser->toArray());
-        } else {
-            return new JsonResponse($this->getFormErrors($form), Response::HTTP_BAD_REQUEST);
+        } catch (Exception $e) {
+            $responseData = $this->handleError($e);
+            $statusCode = $responseData['statusCode'];
         }
+        return new JsonResponse($responseData, $statusCode);
     }
 
     /**
      * @return UserService|object
      */
-    private function getUserService() {
+    private function getUserService()
+    {
         return $this->get('user.service');
     }
 }

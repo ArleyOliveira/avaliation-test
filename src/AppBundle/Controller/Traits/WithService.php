@@ -14,11 +14,21 @@ trait WithService
 
     /**
      * @param AbstractService $service
-     * @param AbstractRepository $repository
+     * @param ...$attachments
+     *
+     * $attachment => [['setMethod' => value], ['setMethod' => value]]
+     *
      */
-    protected function attachRepositoryToService(AbstractService $service, AbstractRepository $repository) {
+    protected function attachToService(AbstractService $service, ...$attachments)
+    {
         $this->service = $service;
-        $service->attachRepository($repository);
+        foreach ($attachments as $attachmentsByMethodAndValue) {
+            foreach ($attachmentsByMethodAndValue as $method => $attachment) {
+                if (is_string($method)) {
+                    $service->$method($attachment);
+                }
+            }
+        }
     }
 
     abstract public function initialize(): void;

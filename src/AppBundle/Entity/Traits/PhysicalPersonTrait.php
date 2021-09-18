@@ -13,7 +13,7 @@ trait PhysicalPersonTrait
     /**
      * @var string
      *
-     * @ORM\Column(name="cpf", type="string", length=11, nullable=true)
+     * @ORM\Column(name="cpf", type="string", nullable=false, unique=true)
      * @Assert\NotBlank(message="Informe o CPF!")
      * @AssertBase\CpfCnpj(cpf=true, whenNull=false, message="O CPF '{{ value }}' é inválido!")
      * @Serializer\Expose()

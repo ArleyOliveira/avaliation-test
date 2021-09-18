@@ -39,7 +39,7 @@ abstract class AbstractService
      * @param IEntity $entity
      * @throws OptimisticLockException
      */
-    private function persist(IEntity $entity)
+    protected function persist(IEntity $entity)
     {
         $this->em->persist($entity);
         $this->em->flush();
@@ -56,13 +56,13 @@ abstract class AbstractService
     /**
      * @param array $data
      */
-    abstract public function create(array $data): void;
+    abstract public function create(array $data): IEntity;
 
     /**
      * @param IEntity $entity
      * @param array $data
      */
-    abstract public function update(IEntity $entity, array $data): void;
+    abstract public function update(IEntity $entity, array $data): IEntity;
 
     /**
      * @param IEntity $entity

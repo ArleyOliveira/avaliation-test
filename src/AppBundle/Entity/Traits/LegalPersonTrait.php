@@ -13,7 +13,7 @@ trait LegalPersonTrait
     /**
      * @var string
      *
-     * @ORM\Column(name="cnpj", type="string", length=14, nullable=true)
+     * @ORM\Column(name="cnpj", type="string", length=14, unique=true)
      * @Assert\NotBlank(message="Informe o CNPJ")
      * @AssertBase\CpfCnpj(cnpj=true, whenNull=false, message="O CNPJ '{{ value }}' é inválido!")
      * @Serializer\Expose()
@@ -32,7 +32,7 @@ trait LegalPersonTrait
      * @param string|null $cnpj
      * @return $this
      */
-    public function setCnpj(?string $cnpj): LegalPersonTrait
+    public function setCnpj(?string $cnpj)
     {
         $this->cnpj = TreatText::onlyNumber($cnpj);
         return $this;
