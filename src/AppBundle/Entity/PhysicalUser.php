@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Table(name="physical_users")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PhysicalUserRepository")
- * @Serializer\ExclusionPolicy("all")
  */
 class PhysicalUser extends PersonUser
 {

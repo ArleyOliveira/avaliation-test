@@ -6,6 +6,7 @@ use AppBundle\Entity\Interfaces\IEntity;
 use AppBundle\Entity\Interfaces\IUser;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -37,8 +38,12 @@ abstract class User extends BaseUser implements IUser, IEntity
 
     public function __construct()
     {
-        $this->setEnabled(true);
         parent::__construct();
+        $this
+            ->setEnabled(true)
+            ->setRoles(['ROLE_USER'])
+            ->setSuperAdmin(false)
+        ;
     }
 
     abstract public function getType(): string;

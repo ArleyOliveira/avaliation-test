@@ -8,6 +8,9 @@ use AppBundle\Validator\Constraint as AssertBase;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @Serializer\ExclusionPolicy("all")
+ */
 trait PhysicalPersonTrait
 {
     /**

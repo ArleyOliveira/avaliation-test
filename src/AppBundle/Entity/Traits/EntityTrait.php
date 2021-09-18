@@ -38,16 +38,12 @@ trait EntityTrait
      */
     private $updated;
 
-    /**
-     * @return int
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function __construct()
     {
+        $this->__init();
+    }
+
+    public function __init() {
         $this->active = true;
         $this->created = new \DateTime('now');
         $this->updated = new \DateTime('now');
