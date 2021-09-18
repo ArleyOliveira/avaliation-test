@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Entity\Interfaces\IEntity;
 use AppBundle\Entity\Traits\EntityTrait;
 use AppBundle\Entity\Traits\WithEntityId;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,10 +29,17 @@ class Wallet implements IEntity
      */
     private $personUser;
 
+    /**
+     * @var ArrayCollection|Transaction[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Wallet", mappedBy="wallet")
+     */
+    private $transactions;
+
     public function __construct()
     {
         $this->__init();
         $this->availableValue = 0.00;
+        $this->transactions = new ArrayCollection();
     }
 
     /**
@@ -67,6 +75,34 @@ class Wallet implements IEntity
     public function setPersonUser(PersonUser $personUser): Wallet
     {
         $this->personUser = $personUser;
+        return $this;
+    }
+
+    /**
+     * @return Transaction[]|ArrayCollection
+     */
+    public function getTransactions(): ArrayCollection
+    {
+        return $this->transactions;
+    }
+
+    /**
+     * @param Transaction[]|ArrayCollection $transactions
+     * @return Wallet
+     */
+    public function setTransactions(ArrayCollection $transactions): Wallet
+    {
+        $this->transactions = $transactions;
+        return $this;
+    }
+
+    /**
+     * @param Transaction $transaction
+     * @return $this
+     */
+    public function addTransaction(Transaction $transaction): Wallet {
+        $this->transactions->add($transaction);
+        $transaction->setWallet($this);
         return $this;
     }
 }
