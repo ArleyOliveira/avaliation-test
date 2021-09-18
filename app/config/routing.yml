@@ -8,5 +8,3 @@ app:
 api_login_check:
     path: /api/v1/login_check
 
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
