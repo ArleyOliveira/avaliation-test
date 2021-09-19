@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Middleware;
+namespace Tests\AppBundle\Validator;
 
 use AppBundle\Entity\Wallet;
 use AppBundle\Exceptions\InvalidTransactionException;
-use AppBundle\Middleware\CheckIfWalletIsNotNullValidator;
+use AppBundle\Validator\CheckIfWalletIsNotNullValidator;
 use PHPUnit\Framework\TestCase;
 
-class CheckIfWalletIsNotNullMiddlewareTest extends TestCase
+class CheckIfWalletIsNotNullValidatorTest extends TestCase
 {
     /**
      * @test
@@ -15,9 +15,9 @@ class CheckIfWalletIsNotNullMiddlewareTest extends TestCase
     public function shouldBeValidWhenNotNull() {
         $wallet = new Wallet();
 
-        $middleware = new CheckIfWalletIsNotNullValidator($wallet);
+        $malidator = new CheckIfWalletIsNotNullValidator($wallet);
 
-        $this->assertTrue($middleware->check());
+        $this->assertTrue($malidator->check());
     }
 
     /**
