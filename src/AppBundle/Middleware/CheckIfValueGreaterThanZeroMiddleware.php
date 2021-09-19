@@ -6,7 +6,7 @@ use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidTransactionException;
 
-class CheckIfValueGreaterEqualThanZeroMiddleware extends Middleware
+class CheckIfValueGreaterThanZeroMiddleware extends Middleware
 {
     /**
      * @var float

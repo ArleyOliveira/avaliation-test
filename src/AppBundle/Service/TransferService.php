@@ -13,7 +13,7 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\NotFoundHttpException;
 use AppBundle\Middleware\CheckIfPayerAndPayeeIsEqualMiddleware;
 use AppBundle\Middleware\CheckIfUserCanSendMoneyMiddleware;
-use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroMiddleware;
+use AppBundle\Middleware\CheckIfValueGreaterThanZeroMiddleware;
 use AppBundle\Middleware\CheckIfWalletHasAvailableValueMiddleware;
 use AppBundle\Middleware\CheckIfWalletIsNotNullMiddleware;
 use AppBundle\Middleware\CheckPaymentServiceAuthorizationMiddleware;
@@ -32,7 +32,7 @@ class TransferService extends TransactionService
         $middleware = new CheckIfWalletIsNotNullMiddleware($this->wallet);
         $middleware
             ->linkWith(new CheckIfPayerAndPayeeIsEqualMiddleware($this->walletOwner, $payee))
-            ->linkWith(new CheckIfValueGreaterEqualThanZeroMiddleware($value))
+            ->linkWith(new CheckIfValueGreaterThanZeroMiddleware($value))
             ->linkWith(new CheckIfUserCanSendMoneyMiddleware($this->walletOwner))
             ->linkWith(new CheckIfWalletHasAvailableValueMiddleware($this->wallet, $value))
             ->linkWith(new CheckPaymentServiceAuthorizationMiddleware())

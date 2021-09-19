@@ -7,7 +7,7 @@ use AppBundle\Entity\Deposit;
 use AppBundle\Entity\Factories\TransactionFactory;
 use AppBundle\Entity\Transaction;
 use AppBundle\Exceptions\AbstractException;
-use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroMiddleware;
+use AppBundle\Middleware\CheckIfValueGreaterThanZeroMiddleware;
 use AppBundle\Middleware\Middleware;
 use Doctrine\ORM\OptimisticLockException;
 
