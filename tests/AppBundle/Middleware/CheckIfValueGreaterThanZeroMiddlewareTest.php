@@ -40,7 +40,7 @@ class CheckIfValueGreaterThanZeroMiddlewareTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrowInvalidTransactionExceptionWhenValueLessThan()
+    public function shouldThrowInvalidTransactionExceptionWhenValueLessThanZero()
     {
         $value = -1;
 
@@ -48,7 +48,7 @@ class CheckIfValueGreaterThanZeroMiddlewareTest extends TestCase
 
         $this->expectException(InvalidTransactionException::class);
 
-        $this->assertTrue($middleware->check());
+        $middleware->check();
 
     }
 }
