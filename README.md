@@ -22,5 +22,5 @@ $ docker-compose exec app bash
 $ bin/console doctrine:migrations:migrate
 ```
 
-- Pronto! A API poderá ser acessada via protocolo http/https [http:127.0.0.1:8008](http:127.0.0.1:8008) para ambiente de desenvolvimento.
+- Pronto! A API poderá ser acessada via protocolo http/https [127.0.0.1:8008](http:127.0.0.1:8008) para ambiente de desenvolvimento.
 
