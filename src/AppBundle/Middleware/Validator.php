@@ -4,18 +4,18 @@ namespace AppBundle\Middleware;
 
 use AppBundle\Exceptions\AbstractException;
 
-abstract class Middleware
+abstract class Validator
 {
     /**
-     * @var Middleware
+     * @var Validator
      */
     protected $next;
 
     /**
-     * @param Middleware $next
-     * @return Middleware
+     * @param Validator $next
+     * @return Validator
      */
-    public function linkWith(Middleware $next): Middleware
+    public function linkWith(Validator $next): Validator
     {
         $this->next = $next;
 

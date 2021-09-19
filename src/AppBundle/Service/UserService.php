@@ -13,8 +13,8 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\BadRequestHttpException;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Form\Serializes\FormErrorSerializer;
-use AppBundle\Middleware\CheckIfExistPhysicalUserByCpfMiddleware;
-use AppBundle\Middleware\CheckIfExistUserByEmailMiddleware;
+use AppBundle\Middleware\CheckIfExistPhysicalUserByCpfValidator;
+use AppBundle\Middleware\CheckIfExistUserByEmailValidator;
 use AppBundle\Repository\PersonUserRepository;
 use AppBundle\Service\Traits\WithRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -77,7 +77,7 @@ class UserService extends AbstractEntityService
     protected function checkExistUser(User $user)
     {
         if ($this->repository instanceof PersonUserRepository) {
-            $middleware = new CheckIfExistUserByEmailMiddleware(
+            $middleware = new CheckIfExistUserByEmailValidator(
                 'email',
                 $user->getEmail(),
                 $user->getId(),
@@ -87,14 +87,14 @@ class UserService extends AbstractEntityService
             $current = $middleware;
 
             if ($user instanceof PhysicalUser) {
-                $current = $current->linkWith(new CheckIfExistPhysicalUserByCpfMiddleware(
+                $current = $current->linkWith(new CheckIfExistPhysicalUserByCpfValidator(
                     'cpf',
                     $user->getCpf(),
                     $user->getId(),
                     $this->em->getRepository(PhysicalUser::class)
                 ));
             } else if ($user instanceof LegalUser) {
-                $current = $current->linkWith(new CheckIfExistPhysicalUserByCpfMiddleware(
+                $current = $current->linkWith(new CheckIfExistPhysicalUserByCpfValidator(
                     'cnpj',
                     $user->getCnpj(),
                     $user->getId(),

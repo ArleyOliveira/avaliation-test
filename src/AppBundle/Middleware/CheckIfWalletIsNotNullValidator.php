@@ -2,23 +2,24 @@
 
 namespace AppBundle\Middleware;
 
+use AppBundle\Entity\Wallet;
 use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidTransactionException;
 
-class CheckIfValueGreaterEqualThanZeroMiddleware extends Middleware
+class CheckIfWalletIsNotNullValidator extends Validator
 {
     /**
-     * @var float
+     * @var Wallet
      */
-    private $value;
+    private $wallet;
 
     /**
-     * @param float $value
+     * @param Wallet|null $wallet
      */
-    public function __construct(float $value)
+    public function __construct(Wallet $wallet = null)
     {
-        $this->value = $value;
+        $this->wallet = $wallet;
     }
 
     /**
@@ -27,10 +28,10 @@ class CheckIfValueGreaterEqualThanZeroMiddleware extends Middleware
      */
     public function check(): bool
     {
-        if ($this->value <= 0) {
+        if (!$this->wallet) {
             throw ExceptionFactory::create(
                 InvalidTransactionException::class,
-                "O valor da transação não pode ser menor ou igual a zero!"
+                'A carteira da transação não foi informada!'
             );
         }
 

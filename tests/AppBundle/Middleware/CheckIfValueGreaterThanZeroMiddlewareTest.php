@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Middleware;
 
 use AppBundle\Exceptions\InvalidTransactionException;
-use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroMiddleware;
+use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroValidator;
 use PHPUnit\Framework\TestCase;
 
 class CheckIfValueGreaterThanZeroMiddlewareTest extends TestCase
@@ -16,7 +16,7 @@ class CheckIfValueGreaterThanZeroMiddlewareTest extends TestCase
     {
         $value = 1;
 
-        $middleware = new CheckIfValueGreaterEqualThanZeroMiddleware($value);
+        $middleware = new CheckIfValueGreaterEqualThanZeroValidator($value);
 
         $this->assertTrue($middleware->check());
     }
@@ -29,7 +29,7 @@ class CheckIfValueGreaterThanZeroMiddlewareTest extends TestCase
     {
         $value = 0;
 
-        $middleware = new CheckIfValueGreaterEqualThanZeroMiddleware($value);
+        $middleware = new CheckIfValueGreaterEqualThanZeroValidator($value);
 
         $this->expectException(InvalidTransactionException::class);
 
@@ -44,7 +44,7 @@ class CheckIfValueGreaterThanZeroMiddlewareTest extends TestCase
     {
         $value = -1;
 
-        $middleware = new CheckIfValueGreaterEqualThanZeroMiddleware($value);
+        $middleware = new CheckIfValueGreaterEqualThanZeroValidator($value);
 
         $this->expectException(InvalidTransactionException::class);
 

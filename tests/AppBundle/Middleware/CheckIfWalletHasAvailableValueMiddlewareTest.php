@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Middleware;
 
 use AppBundle\Entity\Wallet;
 use AppBundle\Exceptions\InvalidTransactionException;
-use AppBundle\Middleware\CheckIfWalletHasAvailableValueMiddleware;
+use AppBundle\Middleware\CheckIfWalletHasAvailableValueValidator;
 use PHPUnit\Framework\TestCase;
 
 class CheckIfWalletHasAvailableValueMiddlewareTest extends TestCase
@@ -32,7 +32,7 @@ class CheckIfWalletHasAvailableValueMiddlewareTest extends TestCase
             ->willReturn($availableValue)
         ;
 
-        $middleware = new CheckIfWalletHasAvailableValueMiddleware($this->wallet, $requestValue);
+        $middleware = new CheckIfWalletHasAvailableValueValidator($this->wallet, $requestValue);
         $hasAvailableValue = $middleware->check();
         $this->assertTrue($hasAvailableValue);
     }
@@ -49,7 +49,7 @@ class CheckIfWalletHasAvailableValueMiddlewareTest extends TestCase
             ->willReturn($availableValue)
         ;
 
-        $middleware = new CheckIfWalletHasAvailableValueMiddleware($this->wallet, $requestValue);
+        $middleware = new CheckIfWalletHasAvailableValueValidator($this->wallet, $requestValue);
 
         $this->expectException(InvalidTransactionException::class);
 

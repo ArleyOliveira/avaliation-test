@@ -6,7 +6,7 @@ use AppBundle\Entity\Wallet;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidTransactionException;
 
-class CheckIfWalletHasAvailableValueMiddleware extends Middleware
+class CheckIfWalletHasAvailableValueValidator extends Validator
 {
     /**
      * @var Wallet

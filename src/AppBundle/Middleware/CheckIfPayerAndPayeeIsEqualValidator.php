@@ -3,25 +3,30 @@
 namespace AppBundle\Middleware;
 
 use AppBundle\Entity\Interfaces\IUserTransaction;
-use AppBundle\Entity\LegalUser;
-use AppBundle\Entity\PersonUser;
 use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidUserException;
 
-class CheckIfUserCanSendMoneyMiddleware extends Middleware
+class CheckIfPayerAndPayeeIsEqualValidator extends Validator
 {
     /**
-     * @var PersonUser
+     * @var IUserTransaction
      */
-    private $user;
+    private $payer;
 
     /**
-     * @param PersonUser $user
+     * @var IUserTransaction
      */
-    public function __construct(IUserTransaction $user)
+    private $payee;
+
+    /**
+     * @param IUserTransaction $payer
+     * @param IUserTransaction $payee
+     */
+    public function __construct(IUserTransaction $payer, IUserTransaction $payee)
     {
-        $this->user = $user;
+        $this->payer = $payer;
+        $this->payee = $payee;
     }
 
     /**
@@ -30,21 +35,12 @@ class CheckIfUserCanSendMoneyMiddleware extends Middleware
      */
     public function check(): bool
     {
-        if ($this->user instanceof LegalUser) {
+        if ($this->payee === $this->payer) {
             throw ExceptionFactory::create(
                 InvalidUserException::class,
-                "Este usuário não pode enviar dinheiro!"
+                "Não é possível realizar transações para você mesmo!"
             );
         }
-
         return $this->checkNext();
-    }
-
-    /**
-     * @return PersonUser
-     */
-    public function getUser(): PersonUser
-    {
-        return $this->user;
     }
 }

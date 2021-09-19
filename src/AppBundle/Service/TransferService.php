@@ -11,13 +11,13 @@ use AppBundle\Entity\Transfer;
 use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\NotFoundHttpException;
-use AppBundle\Middleware\CheckIfPayerAndPayeeIsEqualMiddleware;
-use AppBundle\Middleware\CheckIfUserCanSendMoneyMiddleware;
-use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroMiddleware;
-use AppBundle\Middleware\CheckIfWalletHasAvailableValueMiddleware;
-use AppBundle\Middleware\CheckIfWalletIsNotNullMiddleware;
-use AppBundle\Middleware\CheckPaymentServiceAuthorizationMiddleware;
-use AppBundle\Middleware\Middleware;
+use AppBundle\Middleware\CheckIfPayerAndPayeeIsEqualValidator;
+use AppBundle\Middleware\CheckIfUserCanSendMoneyValidator;
+use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroValidator;
+use AppBundle\Middleware\CheckIfWalletHasAvailableValueValidator;
+use AppBundle\Middleware\CheckIfWalletIsNotNullValidator;
+use AppBundle\Middleware\CheckPaymentServiceAuthorizationValidator;
+use AppBundle\Middleware\Validator;
 use Doctrine\ORM\OptimisticLockException;
 
 class TransferService extends TransactionService
@@ -25,17 +25,17 @@ class TransferService extends TransactionService
     /**
      * @param IUserTransaction $payee
      * @param float $value
-     * @return Middleware
+     * @return Validator
      */
-    protected function getTransferMiddlewares(IUserTransaction $payee, float $value): Middleware
+    protected function getTransferMiddlewares(IUserTransaction $payee, float $value): Validator
     {
-        $middleware = new CheckIfWalletIsNotNullMiddleware($this->wallet);
+        $middleware = new CheckIfWalletIsNotNullValidator($this->wallet);
         $middleware
-            ->linkWith(new CheckIfPayerAndPayeeIsEqualMiddleware($this->walletOwner, $payee))
-            ->linkWith(new CheckIfValueGreaterEqualThanZeroMiddleware($value))
-            ->linkWith(new CheckIfUserCanSendMoneyMiddleware($this->walletOwner))
-            ->linkWith(new CheckIfWalletHasAvailableValueMiddleware($this->wallet, $value))
-            ->linkWith(new CheckPaymentServiceAuthorizationMiddleware())
+            ->linkWith(new CheckIfPayerAndPayeeIsEqualValidator($this->walletOwner, $payee))
+            ->linkWith(new CheckIfValueGreaterEqualThanZeroValidator($value))
+            ->linkWith(new CheckIfUserCanSendMoneyValidator($this->walletOwner))
+            ->linkWith(new CheckIfWalletHasAvailableValueValidator($this->wallet, $value))
+            ->linkWith(new CheckPaymentServiceAuthorizationValidator())
         ;
 
         return $middleware;
