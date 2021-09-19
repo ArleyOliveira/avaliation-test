@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\Factories\PaymentAuthorizerServiceFactory;
 use AppBundle\Service\TransferService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +15,8 @@ class TransferController extends AbstractController
     public function initialize(): void
     {
         $this->attachToService($this->getTransferService(),
-            array('attachWalletOwner' => $this->getUser())
+            array('attachWalletOwner' => $this->getUser()),
+            array('attachPaymentAuthorizerService' => PaymentAuthorizerServiceFactory::create())
         );
     }
 

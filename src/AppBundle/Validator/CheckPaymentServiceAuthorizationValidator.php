@@ -5,12 +5,23 @@ namespace AppBundle\Validator;
 use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\UnauthorizedHttpException;
-use GuzzleHttp\Client;
-use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Service\Interfaces\IPaymentAuthorizerService;
 
 class CheckPaymentServiceAuthorizationValidator extends Validator
 {
-    const ENDPOINT = "https://run.mocky.io/v3/8fafdd68-a090-496f-8c9a-3442cf30dae6";
+
+    /**
+     * @var IPaymentAuthorizerService
+     */
+    private $authorizer;
+
+    /**
+     * @param IPaymentAuthorizerService $authorizer
+     */
+    public function __construct(IPaymentAuthorizerService $authorizer)
+    {
+        $this->authorizer = $authorizer;
+    }
 
     /**
      * @return bool
@@ -18,15 +29,8 @@ class CheckPaymentServiceAuthorizationValidator extends Validator
      */
     public function check(): bool
     {
-        $client = new Client();
-
-        $response = $client->get(self::ENDPOINT);
-
-        $data = json_decode($response->getBody());
-
-        if ($response->getStatusCode() !== Response::HTTP_OK) {
-            $message = (isset($data->message)) ? $data->message : "Serviço autorizador do pagamento não está disponível!";
-
+        if (!$this->authorizer->isAuthorized()) {
+            $message = "Serviço autorizador do pagamento não está disponível!";
             throw ExceptionFactory::create(
                 UnauthorizedHttpException::class,
                 $message

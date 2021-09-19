@@ -11,6 +11,8 @@ use AppBundle\Entity\Transfer;
 use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\NotFoundHttpException;
+use AppBundle\Service\Gateway\PaymentAuthorizerService;
+use AppBundle\Service\Interfaces\IPaymentAuthorizerService;
 use AppBundle\Validator\CheckIfPayerAndPayeeIsEqualValidator;
 use AppBundle\Validator\CheckIfUserCanSendMoneyValidator;
 use AppBundle\Validator\CheckIfValueGreaterEqualThanZeroValidator;
@@ -22,6 +24,14 @@ use Doctrine\ORM\OptimisticLockException;
 
 class TransferService extends TransactionService
 {
+    /**
+     * @var IPaymentAuthorizerService
+     */
+    private $authorizer;
+
+    public function attachPaymentAuthorizerService(IPaymentAuthorizerService $authorizer) {
+        $this->authorizer = $authorizer;
+    }
     /**
      * @param IUserTransaction $payee
      * @param float $value
@@ -35,7 +45,7 @@ class TransferService extends TransactionService
             ->linkWith(new CheckIfValueGreaterEqualThanZeroValidator($value))
             ->linkWith(new CheckIfUserCanSendMoneyValidator($this->walletOwner))
             ->linkWith(new CheckIfWalletHasAvailableValueValidator($this->wallet, $value))
-            ->linkWith(new CheckPaymentServiceAuthorizationValidator())
+            ->linkWith(new CheckPaymentServiceAuthorizationValidator($this->authorizer))
         ;
 
         return $validator;
