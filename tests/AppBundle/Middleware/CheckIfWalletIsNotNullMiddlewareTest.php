@@ -23,7 +23,7 @@ class CheckIfWalletIsNotNullMiddlewareTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrowInvalidTransactionExceptionWhenNull() {
+    public function shouldThrowInvalidTransactionExceptionWhen() {
         $wallet = null;
 
         $validator = new CheckIfWalletIsNotNullMiddleware($wallet);
