@@ -13,6 +13,7 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\BadRequestHttpException;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Form\Serializes\FormErrorSerializer;
+use AppBundle\Validator\CheckIfExistLegalUserByCnpjValidator;
 use AppBundle\Validator\CheckIfExistPhysicalUserByCpfValidator;
 use AppBundle\Validator\CheckIfExistUserByEmailValidator;
 use AppBundle\Repository\PersonUserRepository;
@@ -94,7 +95,7 @@ class UserService extends AbstractEntityService
                     $this->em->getRepository(PhysicalUser::class)
                 ));
             } else if ($user instanceof LegalUser) {
-                $current = $current->linkWith(new CheckIfExistPhysicalUserByCpfValidator(
+                $current = $current->linkWith(new CheckIfExistLegalUserByCnpjValidator(
                     'cnpj',
                     $user->getCnpj(),
                     $user->getId(),

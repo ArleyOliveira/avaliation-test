@@ -7,23 +7,23 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Repository\PersonUserRepository;
 
-class CheckIfExistUserByEmailValidator extends CheckIfExistUserValidator
+class CheckIfExistLegalUserByCnpjValidator extends CheckIfExistUserValidator
 {
     /**
      * @var string
      */
-    private $email;
+    private $cnpj;
 
     /**
      * @param string $columnName
-     * @param string $email
+     * @param string $cnpj
      * @param int|null $ignoreUserId
      * @param PersonUserRepository $repository
      */
-    public function __construct(string $columnName, string $email, ?int $ignoreUserId, PersonUserRepository $repository)
+    public function __construct(string $columnName, string $cnpj, ?int $ignoreUserId, PersonUserRepository $repository)
     {
         parent::__construct($columnName, $ignoreUserId, $repository);
-        $this->email = $email;
+        $this->cnpj = $cnpj;
     }
 
     /**
@@ -32,12 +32,12 @@ class CheckIfExistUserByEmailValidator extends CheckIfExistUserValidator
      */
     public function check(): bool
     {
-        $user = $this->repository->findOneBy([$this->columnName => $this->email]);
+        $user = $this->repository->findOneBy([$this->columnName => $this->cnpj]);
 
         if (null !== $user && $user->getId() !== $this->ignoreUserId) {
             throw ExceptionFactory::create(
                 InvalidUserException::class,
-                "Já existe um usuário com este e-mail ({$this->email}) cadastrado!"
+                "Já existe uma empresa com este CNPJ ({$this->cnpj}) cadastrado!"
             );
         }
 
