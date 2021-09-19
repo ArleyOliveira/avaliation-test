@@ -3,28 +3,18 @@
 namespace AppBundle\Notification;
 
 use AppBundle\Entity\Transaction;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Http\Message\ResponseInterface;
+use AppBundle\Service\Http\ClientHttpService;
 
 class TransactionNotify extends AbstractNotify
 {
     const END_POINT = "http://o4d9z.mocklab.io/notify";
 
-    public static function notify(Transaction $transaction) {
+    public static function notify(Transaction $transaction)
+    {
+        $client = new ClientHttpService();
 
-        $client = new Client();
-
-        $promise = $client->getAsync(self::END_POINT);
-
-        $promise->then(
-            function (ResponseInterface $res) {
-                //TODO
-            },
-            function (RequestException $e) {
-               //TODO
-            }
-        );
-
+        $client->requestAsync('GET', self::END_POINT, array(), function (\stdClass $responseData) {
+            //TODO
+        });
     }
 }
