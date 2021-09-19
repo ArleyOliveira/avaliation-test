@@ -7,7 +7,7 @@ use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidUserException;
 
-class CheckIfPayerAndPayeeIsEqualValidator extends Validator
+class CheckIfPayerAndPayeeIsEqualsValidator extends Validator
 {
     /**
      * @var IUserTransaction
@@ -35,7 +35,7 @@ class CheckIfPayerAndPayeeIsEqualValidator extends Validator
      */
     public function check(): bool
     {
-        if ($this->payee === $this->payer) {
+        if ($this->payee->getId() === $this->payer->getId()) {
             throw ExceptionFactory::create(
                 InvalidUserException::class,
                 "Não é possível realizar transações para você mesmo!"
