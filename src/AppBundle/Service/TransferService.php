@@ -13,7 +13,7 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\NotFoundHttpException;
 use AppBundle\Service\Gateway\PaymentAuthorizerService;
 use AppBundle\Service\Interfaces\IPaymentAuthorizerService;
-use AppBundle\Validator\CheckIfPayerAndPayeeIsEqualsValidator;
+use AppBundle\Validator\CheckIfPayerAndPayeeAreEqualsValidator;
 use AppBundle\Validator\CheckIfUserCanSendMoneyValidator;
 use AppBundle\Validator\CheckIfValueGreaterEqualThanZeroValidator;
 use AppBundle\Validator\CheckIfWalletHasAvailableValueValidator;
@@ -41,7 +41,7 @@ class TransferService extends TransactionService
     {
         $validator = new CheckIfWalletIsNotNullValidator($this->wallet);
         $validator
-            ->linkWith(new CheckIfPayerAndPayeeIsEqualsValidator($this->walletOwner, $payee))
+            ->linkWith(new CheckIfPayerAndPayeeAreEqualsValidator($this->walletOwner, $payee))
             ->linkWith(new CheckIfValueGreaterEqualThanZeroValidator($value))
             ->linkWith(new CheckIfUserCanSendMoneyValidator($this->walletOwner))
             ->linkWith(new CheckIfWalletHasAvailableValueValidator($this->wallet, $value))

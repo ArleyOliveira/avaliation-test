@@ -7,7 +7,7 @@ use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidUserException;
 
-class CheckIfPayerAndPayeeIsEqualsValidator extends Validator
+class CheckIfPayerAndPayeeAreEqualsValidator extends Validator
 {
     /**
      * @var IUserTransaction
