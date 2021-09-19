@@ -5,7 +5,7 @@ Este repositório contém o código-fonte da API do IPay (serviços de pagamento
 
 ## Como rodar em desenvolvimento
 
-- Instalar docker e docker-composer na máquina 
+- Instalar [Docker](https://docs.docker.com/engine/install) e [Docker Composer](https://docs.docker.com/compose/install/) na máquina 
 - Levantar o ambiente 
 ```shell
 $ docker-compose up -d
