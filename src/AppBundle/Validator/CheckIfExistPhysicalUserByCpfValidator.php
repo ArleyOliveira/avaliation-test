@@ -16,14 +16,14 @@ class CheckIfExistPhysicalUserByCpfValidator extends CheckIfExistUserValidator
 
     /**
      * @param string $columnName
-     * @param string $email
+     * @param string $cpf
      * @param int|null $ignoreUserId
      * @param PersonUserRepository $repository
      */
-    public function __construct(string $columnName, string $email, ?int $ignoreUserId, PersonUserRepository $repository)
+    public function __construct(string $columnName, string $cpf, ?int $ignoreUserId, PersonUserRepository $repository)
     {
         parent::__construct($columnName, $ignoreUserId, $repository);
-        $this->cpf = $email;
+        $this->cpf = $cpf;
     }
 
     /**
@@ -42,15 +42,5 @@ class CheckIfExistPhysicalUserByCpfValidator extends CheckIfExistUserValidator
         }
 
         return $this->checkNext();
-    }
-
-    /**
-     * @param string $cpf
-     * @return CheckIfExistPhysicalUserByCpfValidator
-     */
-    public function setCpf(string $cpf): CheckIfExistPhysicalUserByCpfValidator
-    {
-        $this->cpf = $cpf;
-        return $this;
     }
 }

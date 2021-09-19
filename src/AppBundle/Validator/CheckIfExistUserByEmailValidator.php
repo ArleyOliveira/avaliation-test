@@ -16,14 +16,14 @@ class CheckIfExistUserByEmailValidator extends CheckIfExistUserValidator
 
     /**
      * @param string $columnName
-     * @param string $email
+     * @param string $cpf
      * @param int|null $ignoreUserId
      * @param PersonUserRepository $repository
      */
-    public function __construct(string $columnName, string $email, ?int $ignoreUserId, PersonUserRepository $repository)
+    public function __construct(string $columnName, string $cpf, ?int $ignoreUserId, PersonUserRepository $repository)
     {
         parent::__construct($columnName, $ignoreUserId, $repository);
-        $this->email = $email;
+        $this->email = $cpf;
     }
 
     /**
@@ -42,15 +42,5 @@ class CheckIfExistUserByEmailValidator extends CheckIfExistUserValidator
         }
 
         return $this->checkNext();
-    }
-
-    /**
-     * @param string $email
-     * @return CheckIfExistUserByEmailValidator
-     */
-    public function setEmail(string $email): CheckIfExistUserByEmailValidator
-    {
-        $this->email = $email;
-        return $this;
     }
 }
