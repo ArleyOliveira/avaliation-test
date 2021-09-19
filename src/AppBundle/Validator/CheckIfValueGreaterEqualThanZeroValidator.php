@@ -6,6 +6,7 @@ use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\InvalidTransactionException;
 
+
 class CheckIfValueGreaterEqualThanZeroValidator extends Validator
 {
     /**
