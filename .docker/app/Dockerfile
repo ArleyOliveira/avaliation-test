@@ -39,6 +39,10 @@ RUN docker-php-ext-install mcrypt soap gd bcmath pdo_mysql mbstring zip exif pcn
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.0.8
 
+RUN wget https://phar.phpunit.de/phpunit-6.5.phar
+RUN chmod +x phpunit-6.5.phar
+RUN mv phpunit-6.5.phar /usr/local/bin/phpunit
+
 # Add user for laravel application
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
