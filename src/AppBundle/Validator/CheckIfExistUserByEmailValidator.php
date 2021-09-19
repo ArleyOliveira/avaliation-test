@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Middleware;
+namespace AppBundle\Validator;
 
 use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;

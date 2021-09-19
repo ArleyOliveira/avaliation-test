@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Middleware;
+namespace AppBundle\Validator;
 
 use AppBundle\Entity\Wallet;
 use AppBundle\Exceptions\AbstractException;

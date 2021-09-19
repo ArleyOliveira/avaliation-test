@@ -5,9 +5,9 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Interfaces\IUserTransaction;
 use AppBundle\Entity\Transaction;
 use AppBundle\Entity\Wallet;
-use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroValidator;
-use AppBundle\Middleware\CheckIfWalletIsNotNullValidator;
-use AppBundle\Middleware\Validator;
+use AppBundle\Validator\CheckIfValueGreaterEqualThanZeroValidator;
+use AppBundle\Validator\CheckIfWalletIsNotNullValidator;
+use AppBundle\Validator\Validator;
 use AppBundle\Notification\TransactionNotify;
 
 abstract class TransactionService extends AbstractService
@@ -39,11 +39,11 @@ abstract class TransactionService extends AbstractService
     /**
      * @return CheckIfWalletIsNotNullValidator
      */
-    protected function getTransactionMiddlewares(float $value): Validator
+    protected function getTransactionValidators(float $value): Validator
     {
-        $middleware = new CheckIfWalletIsNotNullValidator($this->wallet);
-        $middleware->linkWith(new CheckIfValueGreaterEqualThanZeroValidator($value));
-        return $middleware;
+        $validator = new CheckIfWalletIsNotNullValidator($this->wallet);
+        $validator->linkWith(new CheckIfValueGreaterEqualThanZeroValidator($value));
+        return $validator;
     }
 
     /**

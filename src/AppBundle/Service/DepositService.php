@@ -7,8 +7,7 @@ use AppBundle\Entity\Deposit;
 use AppBundle\Entity\Factories\TransactionFactory;
 use AppBundle\Entity\Transaction;
 use AppBundle\Exceptions\AbstractException;
-use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroValidator;
-use AppBundle\Middleware\Validator;
+use AppBundle\Validator\Validator;
 use Doctrine\ORM\OptimisticLockException;
 
 class DepositService extends TransactionService
@@ -17,9 +16,9 @@ class DepositService extends TransactionService
      * @param float $value
      * @return Validator
      */
-    protected function getDepositMiddlewares(float $value): Validator
+    protected function getDepositValidators(float $value): Validator
     {
-        return $this->getTransactionMiddlewares($value);
+        return $this->getTransactionValidators($value);
     }
 
     /**
@@ -30,8 +29,8 @@ class DepositService extends TransactionService
      */
     public function deposit(float $value): Deposit
     {
-        $middlewares = $this->getDepositMiddlewares($value);
-        $middlewares->check();
+        $validators = $this->getDepositValidators($value);
+        $validators->check();
 
         $transaction = TransactionFactory::createDeposit($this->wallet, $value);
         $this->confirm($transaction);

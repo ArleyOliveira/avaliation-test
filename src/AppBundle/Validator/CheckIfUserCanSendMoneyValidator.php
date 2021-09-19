@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Middleware;
+namespace AppBundle\Validator;
 
 use AppBundle\Entity\Interfaces\IUserTransaction;
 use AppBundle\Entity\LegalUser;

@@ -11,13 +11,13 @@ use AppBundle\Entity\Transfer;
 use AppBundle\Exceptions\AbstractException;
 use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\NotFoundHttpException;
-use AppBundle\Middleware\CheckIfPayerAndPayeeIsEqualValidator;
-use AppBundle\Middleware\CheckIfUserCanSendMoneyValidator;
-use AppBundle\Middleware\CheckIfValueGreaterEqualThanZeroValidator;
-use AppBundle\Middleware\CheckIfWalletHasAvailableValueValidator;
-use AppBundle\Middleware\CheckIfWalletIsNotNullValidator;
-use AppBundle\Middleware\CheckPaymentServiceAuthorizationValidator;
-use AppBundle\Middleware\Validator;
+use AppBundle\Validator\CheckIfPayerAndPayeeIsEqualValidator;
+use AppBundle\Validator\CheckIfUserCanSendMoneyValidator;
+use AppBundle\Validator\CheckIfValueGreaterEqualThanZeroValidator;
+use AppBundle\Validator\CheckIfWalletHasAvailableValueValidator;
+use AppBundle\Validator\CheckIfWalletIsNotNullValidator;
+use AppBundle\Validator\CheckPaymentServiceAuthorizationValidator;
+use AppBundle\Validator\Validator;
 use Doctrine\ORM\OptimisticLockException;
 
 class TransferService extends TransactionService
@@ -27,10 +27,10 @@ class TransferService extends TransactionService
      * @param float $value
      * @return Validator
      */
-    protected function getTransferMiddlewares(IUserTransaction $payee, float $value): Validator
+    protected function getTransferValidators(IUserTransaction $payee, float $value): Validator
     {
-        $middleware = new CheckIfWalletIsNotNullValidator($this->wallet);
-        $middleware
+        $validator = new CheckIfWalletIsNotNullValidator($this->wallet);
+        $validator
             ->linkWith(new CheckIfPayerAndPayeeIsEqualValidator($this->walletOwner, $payee))
             ->linkWith(new CheckIfValueGreaterEqualThanZeroValidator($value))
             ->linkWith(new CheckIfUserCanSendMoneyValidator($this->walletOwner))
@@ -38,7 +38,7 @@ class TransferService extends TransactionService
             ->linkWith(new CheckPaymentServiceAuthorizationValidator())
         ;
 
-        return $middleware;
+        return $validator;
     }
 
     /**
@@ -71,8 +71,8 @@ class TransferService extends TransactionService
      */
     public function transfer(IUserTransaction $payee, float $value): Transfer
     {
-        $middlewares = $this->getTransferMiddlewares($payee, $value);
-        $middlewares->check();
+        $validators = $this->getTransferValidators($payee, $value);
+        $validators->check();
 
         $transaction = TransactionFactory::createTransfer($this->wallet, $payee, $value);
         $this->confirm($transaction);

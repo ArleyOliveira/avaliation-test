@@ -13,8 +13,8 @@ use AppBundle\Exceptions\Factories\ExceptionFactory;
 use AppBundle\Exceptions\Http\BadRequestHttpException;
 use AppBundle\Exceptions\InvalidUserException;
 use AppBundle\Form\Serializes\FormErrorSerializer;
-use AppBundle\Middleware\CheckIfExistPhysicalUserByCpfValidator;
-use AppBundle\Middleware\CheckIfExistUserByEmailValidator;
+use AppBundle\Validator\CheckIfExistPhysicalUserByCpfValidator;
+use AppBundle\Validator\CheckIfExistUserByEmailValidator;
 use AppBundle\Repository\PersonUserRepository;
 use AppBundle\Service\Traits\WithRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -77,14 +77,14 @@ class UserService extends AbstractEntityService
     protected function checkExistUser(User $user)
     {
         if ($this->repository instanceof PersonUserRepository) {
-            $middleware = new CheckIfExistUserByEmailValidator(
+            $validator = new CheckIfExistUserByEmailValidator(
                 'email',
                 $user->getEmail(),
                 $user->getId(),
                 $this->repository
             );
 
-            $current = $middleware;
+            $current = $validator;
 
             if ($user instanceof PhysicalUser) {
                 $current = $current->linkWith(new CheckIfExistPhysicalUserByCpfValidator(
@@ -102,7 +102,7 @@ class UserService extends AbstractEntityService
                 ));
             }
             
-            $middleware->check();
+            $validator->check();
         }
     }
 
