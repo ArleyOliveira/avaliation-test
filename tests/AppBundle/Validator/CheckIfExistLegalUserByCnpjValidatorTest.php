@@ -15,7 +15,7 @@ class CheckIfExistLegalUserByCnpjValidatorTest extends TestCase
 
     protected function setUp()
     {
-        $this->repository = $this->createMock(LegalUserRepository::class);
+        $this->repository = $this->createMock(LegalUserRepository::class, array(), array());
     }
 
     /**
